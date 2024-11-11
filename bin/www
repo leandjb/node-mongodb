@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const mongoose = require('mongoose');
+const app = require('../index');
+const http = require('http');
+
+//conectart al servidor Atlas
+mongoose.connect(
+    process.env.MONGO_CONN_STR,                             // cadena de conexion
+    {                                                       // opciones para conectar
+        dbName: process.env.DB_NAME,
+        autoCreate: (process.env.NODE_ENV !== 'production'),
+        autoIndex: (process.env.NODE_ENV !== 'production'),
+    },
+    (err) => console.log(err || 'Conectado a MongoDB')      // notificacion de fallo/exito
+);
+
+// configurar el puerto en express
+const puerto = process.env.PUERTO
+app.set('port', puerto);
+
+// crear servidor HTTP
+var servidor = http.createServer(app);
+
+//empezar a escuchar por el puerto configurado
+servidor.listen(puerto);
+
+//reportar errores
+servidor.on('error', error => { throw error });
+
+//notificar inicio del servidor()
+servidor.on('listening', () => { console.log(`Servidor escuchando en puerto ${puerto}`) });
