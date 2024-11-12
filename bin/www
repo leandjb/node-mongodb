@@ -6,12 +6,13 @@ const app = require('../index');
 const http = require('http');
 
 //conectart al servidor Atlas
+mongoose.set('debug', process.env.NODE_ENV !== 'production');
 mongoose.connect(
     process.env.MONGO_CONN_STR,                             // cadena de conexion
     {                                                       // opciones para conectar
         dbName: process.env.DB_NAME,
         autoCreate: (process.env.NODE_ENV !== 'production'),
-        autoIndex: (process.env.NODE_ENV !== 'production'),
+        autoIndex: (process.env.NODE_ENV !== 'production')
     },
     (err) => console.log(err || 'Conectado a MongoDB')      // notificacion de fallo/exito
 );

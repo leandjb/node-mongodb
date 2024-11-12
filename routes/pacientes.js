@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const pacientesMW = require('../middlewares/pacientes')
+const { listar, crear, actualizar, eliminar, encontrar } = require('../middlewares/pacientes');
 const {
-  uuidParamValidator
+  uuidParamValidator,
+  crearPacienteValidator
 } = require('../middlewares/validators');
 
-router.get('/', pacientesMW.listar);
+router.get('/', listar);
 
-router.post('/', pacientesMW.crear);
+router.post('/', crearPacienteValidator, crear);
 
-router.patch('/:id', uuidParamValidator, pacientesMW.actualizar);
+router.patch('/:id', uuidParamValidator, actualizar);
 
-router.delete('/:id', uuidParamValidator, pacientesMW.eliminar);
+router.delete('/:id', uuidParamValidator, eliminar);
 
-router.get('/:id', uuidParamValidator, pacientesMW.encontrar);
+router.get('/:id', uuidParamValidator, encontrar);
 
 module.exports = router;

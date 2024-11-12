@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const citasMW = require('../middlewares/citas')
+const { listar, crear, actualizar, eliminar, encontrar } = require('../middlewares/citas');
 const {
-  uuidParamValidator
+  uuidParamValidator,
+  crearCitaValidator
 } = require('../middlewares/validators');
 
-router.get('/', citasMW.listar);
+router.get('/', listar);
 
-router.post('/', citasMW.crear);
+router.post('/', crearCitaValidator, crear);
 
-router.patch('/:id', uuidParamValidator, citasMW.actualizar);
+router.patch('/:id', uuidParamValidator, actualizar);
 
-router.delete('/:id', uuidParamValidator, citasMW.eliminar);
+router.delete('/:id', uuidParamValidator, eliminar);
 
-router.get('/:id', uuidParamValidator, citasMW.encontrar);
+router.get('/:id', uuidParamValidator, encontrar);
 
 module.exports = router;
